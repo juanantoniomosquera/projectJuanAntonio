@@ -1,0 +1,98 @@
+version: "3.6"
+services:
+  webinterfaz:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx-interfaz
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+    ports:
+      - target: 80
+        published: 8000
+        protocol: tcp
+        mode: host
+    volumes:
+      - ./interfaz:/var/www/interfaz/
+    networks:
+      - backend
+  websimulador:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx-simulador
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+    ports:
+      - target: 80
+        published: 8001
+        protocol: tcp
+        mode: host
+    volumes:
+      - ./simulador:/var/www/simulador/
+    networks:
+      - backend
+  webservidor:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx-servidor
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+    ports:
+      - target: 80
+        published: 8002
+        protocol: tcp
+        mode: host
+    volumes:
+      - ./servidor:/var/www/servidor/
+    networks:
+      - backend
+  interfaz:
+    build:
+      context: .
+      dockerfile: Dockerfile-interfaz
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+    volumes:
+      - ./interfaz:/var/www/interfaz/
+    networks:
+      - backend
+  simulador:
+    build:
+      context: .
+      dockerfile: Dockerfile-simulador
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+    volumes:
+      - ./simulador:/var/www/simulador/
+    networks:
+      - backend
+  servidor:
+    build:
+      context: .
+      dockerfile: Dockerfile-servidor
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+    volumes:
+      - ./servidor:/var/www/servidor/
+    networks:
+      - backend
+networks:
+  backend:
+
